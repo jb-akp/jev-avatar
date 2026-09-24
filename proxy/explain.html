@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Jev Is</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Figtree:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#eef2f6;--card:#fff;--line:#dde3ea;--ink:#0f1720;--dim:#667384;--jev:#c93aa3;--jevbg:#fbe9f6;--ts:#e551ba;--hot:#e5484d;--warm:#e39b12;--cool:#3b6fd8;--gpt:#475569}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif}
+section{min-height:100vh;padding:56px 7vw;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--line)}
+.kick{font:700 12px "Space Mono",monospace;letter-spacing:.14em;color:var(--jev);text-transform:uppercase;margin-bottom:10px}
+h2{font-size:clamp(30px,3.4vw,46px);margin:0 0 8px;letter-spacing:-.025em;text-wrap:balance}
+.lede{font-size:19px;color:var(--dim);margin:0 0 30px;max-width:46em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px}
+/* 1 · diagram */
+.dia{display:grid;grid-template-columns:1.1fr auto 180px auto 1.3fr;align-items:center;gap:22px}
+.said-label{font:700 12px "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}.in textarea{width:100%;min-height:120px;border:0;border-radius:14px;padding:16px 18px;font:600 24px/1.4 Figtree,sans-serif;resize:none;background:#f2f4f7;color:var(--ink)}
+.in button{margin-top:10px;font:700 14px Figtree,sans-serif;background:var(--ink);color:#fff;border:0;border-radius:10px;padding:11px 16px;cursor:pointer}
+.arrow{font-size:30px;color:var(--dim)}
+.jevbox{background:#fff;border:3px solid var(--ts);border-radius:20px;padding:20px 10px;text-align:center}.jevbox img{width:84px;height:84px;display:block;margin:0 auto 8px}
+.jevbox b{display:block;font-size:30px;letter-spacing:-.02em;color:var(--ink)}
+.jevbox span{font:700 20px "Space Mono",monospace;color:var(--jev)}
+.outs{display:flex;flex-direction:column;gap:10px}
+.out{display:flex;justify-content:space-between;align-items:center;background:#f2f4f7;border-radius:12px;padding:16px 18px;font-size:20px}
+.out b{font-family:"Space Mono",monospace;font-size:20px}.out.hot{background:#fde7e8}.out.hot b{color:var(--hot)}
+.out.pop{animation:pop .35s ease-out}
+@keyframes pop{from{transform:scale(.96);opacity:.3}to{transform:none;opacity:1}}
+.zero{margin-top:20px;font-size:22px;color:var(--dim);text-align:center}
+.zero b{color:var(--jev)}
+/* 2 · three kinds */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.three h3{margin:0;font-size:22px}.three code{font:13px "Space Mono",monospace;color:var(--dim)}
+.three .q{font-size:17px;margin:18px 0 14px}
+.track{height:12px;background:#e8edf2;border-radius:6px;overflow:hidden}.track i{display:block;height:100%;background:var(--cool);border-radius:6px;transition:width .5s}
+.scale{display:flex;justify-content:space-between;font:12px "Space Mono",monospace;color:var(--dim);margin-top:8px}
+.opt{display:grid;grid-template-columns:150px 1fr 48px;gap:10px;align-items:center;font-size:15px;margin:7px 0}
+.opt .track{height:9px}.opt span:last-child{font:12px "Space Mono",monospace;text-align:right}
+.lv{display:flex;gap:6px}.lv div{flex:1;text-align:center;font-size:13px;color:var(--dim)}.lv div i{display:block;height:12px;border-radius:6px;background:#e8edf2;margin-bottom:8px}
+.lv div.on{color:var(--ink);font-weight:700}.lv div.on i{background:var(--cool)}
+.note{font-size:14px;color:var(--dim);margin-top:16px}
+/* 3 · race */
+.race{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.lane h3{display:flex;justify-content:space-between;margin:0 0 14px;font-size:20px}
+.clock{font:700 26px "Space Mono",monospace}
+.lane.j .clock{color:var(--jev)}.lane.g .clock{color:var(--gpt)}
+.typed{min-height:220px;font-size:18px;line-height:1.55;color:#334155}
+.chips{display:flex;flex-direction:column;gap:10px}
+.chip{display:flex;justify-content:space-between;padding:12px 14px;border-radius:10px;background:var(--jevbg);font-size:16px}
+.chip b{font-family:"Space Mono",monospace}
+.go{align-self:flex-start;margin-top:22px;font:800 16px Figtree,sans-serif;background:var(--ink);color:#fff;border:0;border-radius:12px;padding:14px 22px;cursor:pointer}
+/* 4 · speed */
+.bars{display:flex;flex-direction:column;gap:20px}
+.bar .lab{display:flex;justify-content:space-between;font-size:18px;margin-bottom:8px}
+.bar .lab b{font-family:"Space Mono",monospace}
+.bar .track{height:22px;border-radius:8px}.bar .track i{border-radius:8px}
+.bar.j .track i{background:var(--jev)}.bar.g .track i{background:#94a3b8}
+.foot{font-size:15px;color:var(--dim);margin-top:22px;line-height:1.6}
+/* 5 · fit */
+.fit{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fit h3{margin:0 0 14px;font-size:22px}.fit ul{margin:0;padding-left:20px;font-size:18px;line-height:1.8}
+.fit .yes h3{color:var(--jev)}.fit .no h3{color:var(--hot)}
+button:focus-visible{outline:3px solid var(--cool);outline-offset:2px}textarea:focus{outline:2px solid var(--line)}
+@media (max-width:900px){.dia,.three,.race,.fit{grid-template-columns:1fr}.arrow{transform:rotate(90deg);text-align:center}}
+@media (prefers-reduced-motion:reduce){.out.pop{animation:none}.track i{transition:none}}
+</style></head><body>
+
+<section id="s1">
+  <h2>What Jev is</h2>
+  <p class="lede">A caller says something. Jev answers four questions about it.</p>
+  <div class="card dia">
+    <div class="in"><div class="said-label">The caller says</div><textarea id="said" aria-label="What the caller says">My tooth is killing me and my face is swelling.</textarea></div>
+    <div class="arrow">→</div>
+    <div class="jevbox"><img src="/static/icon.png" alt="Jev by TypeSafe"><b>Jev</b><span id="ms">&nbsp;</span></div>
+    <div class="arrow">→</div>
+    <div class="outs" id="outs">
+      <div class="out">Wants<b>?</b></div><div class="out">Emergency?<b>?</b></div>
+      <div class="out">Wants a person?<b>?</b></div><div class="out">Frustrated?<b>?</b></div>
+    </div>
+  </div>
+  <div class="zero" id="zero">&nbsp;</div>
+</section>
+
+<section id="s2">
+  <h2>Three kinds of decisions</h2>
+  <p class="lede">Same caller as above, and each card is a real answer from Jev.</p>
+  <div class="three">
+    <div class="card"><h3>Yes or no</h3><code>boolean</code><div class="q">Is it an emergency?</div>
+      <div class="track"><i id="b-emg" style="width:0"></i></div><div class="scale"><span>no · 0</span><b id="b-emg-v">—</b><span>1 · yes</span></div>
+      <div class="note">One number from 0 to 1.</div></div>
+    <div class="card"><h3>Pick one</h3><code>choice</code><div class="q">What do they want?</div><div id="c-opts"></div>
+      <div class="note">Up to 255 options, each with a probability.</div></div>
+    <div class="card"><h3>Score</h3><code>score</code><div class="q">How frustrated are they?</div>
+      <div class="lv" id="s-lv"><div><i></i>0 calm</div><div><i></i>1 annoyed</div><div><i></i>2 very frustrated</div></div>
+      <div class="note">2 to 10 levels you write yourself.</div></div>
+  </div>
+</section>
+
+<section id="s3">
+  <h2>Jev vs a normal AI model</h2>
+  <p class="lede">Same caller and same questions, both started at the same time.</p>
+  <div class="race">
+    <div class="card lane j"><h3><span style="display:flex;align-items:center;gap:10px"><img src="/static/icon.png" alt="" style="width:30px;height:30px">Jev</span> <span class="clock" id="jc">0.00s</span></h3><div class="chips" id="jchips"></div></div>
+    <div class="card lane g"><h3>GPT-6 Luna <span class="clock" id="gc">0.00s</span></h3><div class="typed" id="typed"></div></div>
+  </div>
+  <button class="go" id="race">Start both ↵</button>
+</section>
+
+<section id="s4">
+  <h2>Speed</h2>
+  <p class="lede">Time to route one caller on my own test calls, 10 runs each.</p>
+  <div class="card bars">
+    <div class="bar j"><div class="lab"><span>Jev</span><b>0.36 s · $0.02 per 1,000 calls</b></div><div class="track"><i style="width:19%"></i></div></div>
+    <div class="bar g"><div class="lab"><span>GPT-6 Sol</span><b>1.67 s · $0.76 per 1,000 calls</b></div><div class="track"><i style="width:89%"></i></div></div>
+    <div class="bar g"><div class="lab"><span>GPT-6 Luna</span><b>1.88 s · $0.05 per 1,000 calls</b></div><div class="track"><i style="width:100%"></i></div></div>
+  </div>
+  <p class="foot">Not smarter, just faster. On my 20-caller test, Jev got 20/20 after one fix and Luna got 18/20.</p>
+</section>
+
+<section id="s5">
+  <h2>When to use it (and when not to)</h2>
+  <p class="lede">Jev makes the decision, and a normal model like GPT or Claude does the talking.</p>
+  <div class="fit">
+    <div class="card yes"><h3>Use Jev for</h3><ul><li>Routing calls and tickets</li><li>Yes or no checks, like "is this urgent?"</li><li>Scores, like "how angry is this person?"</li><li>Anything you decide thousands of times</li></ul></div>
+    <div class="card no"><h3>Don't use Jev for</h3><ul><li>Writing or summarizing</li><li>Math or comparing dates</li><li>Long chains of reasoning</li><li>Trusting blindly: it can pick a wrong answer that looks right</li></ul></div>
+  </div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+const pct = p => Math.round(p * 100) + "%";
+let last = null;
+async function askJev(said) {
+  const r = await fetch("/api/jev", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({caller_said: said})});
+  return r.json();
+}
+function paint(d) {
+  last = d; const a = d.answers;
+  $("ms").textContent = d.jev_ms + " ms";
+  const rows = [["Wants", a.intent.choice.replaceAll("_", " "), false],
+                ["Emergency?", pct(a.emergency.probability), a.emergency.probability >= .5],
+                ["Wants a person?", pct(a.wants_human.probability), a.wants_human.probability >= .7],
+                ["Frustrated?", ["calm", "a bit", "very"][Math.round(a.frustration.score)], a.frustration.score >= 1.5]];
+  $("outs").innerHTML = rows.map(([q, v, hot]) => `<div class="out pop${hot ? " hot" : ""}">${q}<b>${v}</b></div>`).join("");
+  $("zero").innerHTML = `Words Jev wrote: <b>0</b>`;
+  $("b-emg").style.width = pct(a.emergency.probability); $("b-emg-v").textContent = a.emergency.probability.toFixed(2);
+  $("c-opts").innerHTML = Object.entries(a.intent.probabilities).sort((x, y) => y[1] - x[1]).map(([k, p]) =>
+    `<div class="opt"><span>${k.replaceAll("_", " ")}</span><div class="track"><i style="width:${Math.max(1, p * 100)}%"></i></div><span>${pct(p)}</span></div>`).join("");
+  const lvl = Math.round(a.frustration.score);
+  [...$("s-lv").children].forEach((el, i) => el.classList.toggle("on", i === lvl));
+}
+async function run() { $("ms").textContent = "…"; paint(await askJev($("said").value)); }
+$("said").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); $("said").blur(); run(); } });
+
+function startRace() {
+  const said = $("said").value, t0 = performance.now();
+  $("jchips").innerHTML = ""; $("typed").textContent = ""; let jDone = false, gDone = false;
+  const tick = setInterval(() => {
+    const s = ((performance.now() - t0) / 1000).toFixed(2) + "s";
+    if (!jDone) $("jc").textContent = s; if (!gDone) $("gc").textContent = s;
+    if (jDone && gDone) clearInterval(tick);
+  }, 30);
+  askJev(said).then(d => {
+    jDone = true; $("jc").textContent = ((performance.now() - t0) / 1000).toFixed(2) + "s"; paint(d);
+    const a = d.answers;
+    $("jchips").innerHTML = [["Wants", a.intent.choice.replaceAll("_", " ")], ["Emergency", pct(a.emergency.probability)],
+      ["Wants a person", pct(a.wants_human.probability)], ["Frustration", a.frustration.score.toFixed(1) + " of 2"]]
+      .map(([k, v]) => `<div class="chip">${k}<b>${v}</b></div>`).join("");
+  });
+  const es = new EventSource("/api/llm?said=" + encodeURIComponent(said));
+  es.onmessage = e => { $("typed").textContent += JSON.parse(e.data); };
+  es.addEventListener("done", () => { gDone = true; $("gc").textContent = ((performance.now() - t0) / 1000).toFixed(2) + "s"; es.close(); });
+  es.onerror = () => { gDone = true; es.close(); };
+}
+$("race").onclick = startRace;
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "TEXTAREA") return;
+  if (/^[1-5]$/.test(e.key)) $("s" + e.key).scrollIntoView({behavior: "smooth"});
+  if (e.key === "Enter" && location.hash !== "#s1") startRace();
+});
+</script></body></html>

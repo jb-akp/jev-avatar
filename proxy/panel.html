@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jev Decisions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Figtree:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#0a0c10;--card:#12161d;--line:#1f2631;--ink:#f1f4f8;--dim:#6b7686;--jev:#7cf3c4;--hot:#ff6b5b;--warm:#ffc24b;--cool:#6aa8ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;padding:28px 26px}
+.top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+.brand{font:700 13px "Space Mono",monospace;letter-spacing:.14em;color:var(--jev);text-transform:uppercase}
+.sub{font-size:14px;color:var(--dim)}
+.now{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.said{font-size:24px;line-height:1.4;font-weight:600;margin:0 0 22px}
+.said:before{content:"Caller";display:block;font:700 11px "Space Mono",monospace;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+.q{display:grid;grid-template-columns:120px 1fr 150px;align-items:center;gap:14px;margin:12px 0}
+.qn{font:700 12px "Space Mono",monospace;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.bar{height:12px;background:#1a2029;border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:6px;transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.qv{font:700 15px "Space Mono",monospace;text-align:right}
+.type{font:400 10px "Space Mono",monospace;color:var(--dim);display:block;letter-spacing:.06em}
+.verdict{display:flex;align-items:center;justify-content:space-between;margin-top:22px;padding-top:20px;border-top:1px solid var(--line);gap:12px;flex-wrap:wrap}
+.node{font-size:34px;font-weight:800;letter-spacing:-.02em}
+.node:before{content:"→ ";color:var(--jev)}
+.why{font-size:14px;color:var(--dim);margin-top:4px}
+.ms{font:700 40px "Space Mono",monospace;color:var(--jev);text-align:right;line-height:1}
+.ms small{display:block;font-size:11px;color:var(--dim);letter-spacing:.1em;margin-top:6px}
+.hist{margin-top:18px;display:flex;flex-direction:column;gap:6px}
+.h{display:grid;grid-template-columns:70px 170px 60px 1fr;gap:12px;font-size:13px;color:var(--dim);padding:8px 12px;border-radius:8px;background:#0e1117}
+.h b{color:var(--ink);font-weight:600}
+.h code{font-family:"Space Mono",monospace;color:var(--jev)}
+.empty{color:var(--dim);font-size:18px;padding:40px 0;text-align:center}
+.flash{animation:flash .6s ease-out}
+@keyframes flash{from{box-shadow:0 0 0 2px var(--jev)}to{box-shadow:0 0 0 0 transparent}}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}.flash{animation:none}}
+.toggle{font:700 12px "Space Mono",monospace;letter-spacing:.08em;background:transparent;color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer}
+.toggle.on{color:var(--jev);border-color:var(--jev)}
+.hood{display:none;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.hood.on{display:grid}
+.pane{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;min-width:0}
+.pane h3{margin:0 0 12px;font:700 11px "Space Mono",monospace;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.pane h3 b{color:var(--jev)}
+.qrow{display:flex;gap:10px;align-items:baseline;margin:8px 0;font-size:14px;line-height:1.4}
+.tag{flex:0 0 auto;font:700 10px "Space Mono",monospace;padding:3px 7px;border-radius:5px;background:#1a2029;color:var(--jev);text-transform:uppercase;letter-spacing:.06em}
+.state{font-size:15px;padding:10px 12px;background:#0e1117;border-radius:8px;margin-bottom:10px}
+pre{margin:0;font:13px/1.55 "Space Mono",monospace;color:#c7d0dc;white-space:pre-wrap;word-break:break-word;overflow-x:auto}
+pre .k{color:var(--cool)}pre .n{color:var(--warm)}pre .s{color:var(--jev)}
+.words0{margin-top:12px;font:700 12px "Space Mono",monospace;color:var(--warm)}
+@media (max-width:900px){.hood{grid-template-columns:1fr}}
+</style></head><body>
+<div class="top"><span class="brand">Jev · decisions</span><span style="display:flex;gap:14px;align-items:center"><span class="sub">Live decisions from Jev</span><button class="toggle" id="tg">UNDER THE HOOD (U)</button></span></div>
+<div class="now" id="now"><div class="empty">Waiting for the first caller…</div></div>
+<div class="hood" id="hood">
+  <div class="pane"><h3>1 · What we send <b>Jev</b></h3><div id="req"></div></div>
+  <div class="pane"><h3>2 · What <b>Jev</b> sends back</h3><pre id="res"></pre><div class="words0" id="w0"></div></div>
+</div>
+<div class="hist" id="hist"></div>
+<script>
+const pct = p => Math.round(p * 100) + "%";
+const color = p => p >= .7 ? "var(--hot)" : p >= .4 ? "var(--warm)" : "var(--cool)";
+function row(name, type, frac, label, c) {
+  return `<div class="q"><div class="qn">${name}<span class="type">${type}</span></div>
+    <div class="bar"><i style="width:${Math.max(3, frac * 100)}%;background:${c}"></i></div><div class="qv">${label}</div></div>`;
+}
+function hood(d) {
+  if (!d.request) return;
+  const q = d.request.questions;
+  document.getElementById("req").innerHTML = `<div class="state"><span class="tag">state</span> “${d.request.state}”</div>` +
+    Object.entries(q).map(([k, v]) => `<div class="qrow"><span class="tag">${v.type}</span><span><b>${k}</b> · ${v.instructions}</span></div>`).join("");
+  const json = JSON.stringify(d.response, null, 1)
+    .replace(/"([a-z_0-9]+)":/g, '<span class="k">"$1"</span>:')
+    .replace(/: (-?[0-9.]+)/g, ': <span class="n">$1</span>')
+    .replace(/: "([^"]*)"/g, ': <span class="s">"$1"</span>');
+  document.getElementById("res").innerHTML = json;
+  document.getElementById("w0").textContent = `${d.jev_ms} ms · ${d.input_tokens} tokens in · 0 words out`;
+}
+const tg = document.getElementById("tg"), hd = document.getElementById("hood");
+function flip() { hd.classList.toggle("on"); tg.classList.toggle("on"); }
+tg.onclick = flip;
+document.addEventListener("keydown", e => { if (e.key.toLowerCase() === "u") flip(); });
+function show(d) {
+  hood(d);
+  const a = d.answers, ic = d.confidence.intent ?? 1, f = a.frustration.score / 2;
+  const now = document.getElementById("now");
+  now.innerHTML = `<p class="said">“${d.caller_said}”</p>
+    ${row("intent", "choice", ic, `${a.intent.choice.replaceAll("_", " ")}`, "var(--jev)")}
+    ${row("emergency", "yes / no", a.emergency.probability, pct(a.emergency.probability), color(a.emergency.probability))}
+    ${row("wants human", "yes / no", a.wants_human.probability, pct(a.wants_human.probability), color(a.wants_human.probability))}
+    ${row("frustration", "score 0–2", f, a.frustration.score.toFixed(1), color(f))}
+    <div class="verdict"><div><div class="node">${d.next_node}</div><div class="why">${d.why}</div></div>
+    <div class="ms">${d.jev_ms}ms<small>JEV DECISION TIME</small></div></div>`;
+  now.classList.remove("flash"); void now.offsetWidth; now.classList.add("flash");
+  const h = document.createElement("div");
+  h.className = "h";
+  h.innerHTML = `<span>${d.at}</span><b>${d.next_node}</b><code>${d.jev_ms}ms</code><span>“${d.caller_said}”</span>`;
+  document.getElementById("hist").prepend(h);
+}
+new EventSource("/events").onmessage = e => show(JSON.parse(e.data));
+</script></body></html>

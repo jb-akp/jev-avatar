@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>How the call works</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Figtree:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#0a0c10;--card:#12161d;--line:#1f2631;--ink:#f1f4f8;--dim:#6b7686;--jev:#7cf3c4;--warm:#ffc24b;--cool:#6aa8ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;padding:40px 30px}
+h1{font-size:30px;margin:0 0 6px;letter-spacing:-.02em}.lede{color:var(--dim);font-size:17px;margin:0 0 34px}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:stretch}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;position:relative;margin-right:28px}
+.step:not(:last-child):after{content:"→";position:absolute;right:-24px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:22px}
+.who{font:700 11px "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.what{font-size:17px;font-weight:600;line-height:1.35}.eg{margin-top:10px;font:12px/1.5 "Space Mono",monospace;color:var(--dim)}
+.jev{border-color:var(--jev)}.jev .who{color:var(--jev)}.code .who{color:var(--warm)}.llm .who{color:var(--cool)}.face .who{color:#ff8fb1}.caller .who{color:var(--dim)}
+.back{margin-top:26px;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:16px 20px;color:var(--dim);font-size:16px}
+.back b{color:var(--ink)}
+.split{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.box h3{margin:0 0 8px;font-size:16px}.box p{margin:0;color:var(--dim);font-size:15px;line-height:1.5}
+</style></head><body>
+<h1>What happens when someone calls</h1>
+<p class="lede">One caller sentence, start to finish. The whole round trip for the decision takes about a third of a second.</p>
+<div class="flow">
+ <div class="step caller"><div class="who">1 · Caller</div><div class="what">Says what they need</div><div class="eg">“my face is swelling”</div></div>
+ <div class="step llm"><div class="who">2 · Avatar's LLM</div><div class="what">Hears it and calls one tool: route_request</div><div class="eg">sends the caller's words</div></div>
+ <div class="step jev"><div class="who">3 · Jev</div><div class="what">Answers 4 questions at once. Writes nothing.</div><div class="eg">emergency: 96%<br>intent: book<br>~100 ms</div></div>
+ <div class="step code"><div class="who">4 · My code</div><div class="what">Applies the rules in order</div><div class="eg">emergency first,<br>then human,<br>then intent</div></div>
+ <div class="step face"><div class="who">5 · The avatar</div><div class="what">Jumps to that part of the conversation and talks</div><div class="eg">next_node:<br>Emergency Triage</div></div>
+</div>
+<div class="back">The only thing my server sends back to the avatar is <b>{"next_node": "Emergency Triage"}</b>. Akapulu reads it and moves the conversation there.</div>
+<div class="split">
+ <div class="box"><h3>Jev is good at</h3><p>Picking one option, yes or no with a percentage, and scores on a scale. Fast and cheap enough to run on every sentence of a live call.</p></div>
+ <div class="box"><h3>Jev can't</h3><p>Write, summarize, do math or compare dates. It can also pick a wrong answer that looks valid. That's why the rules live in code and the talking is done by an LLM.</p></div>
+</div>
+</body></html>
