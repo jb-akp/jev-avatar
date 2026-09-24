@@ -30,14 +30,14 @@ Jev scored 19/20 until the emergency line moved from 70% to 50%: a false alarm i
 
 You need: Python 3, git, [cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) (`brew install cloudflared` on a Mac), a [Vercel](https://vercel.com) account, and an [Akapulu](https://akapulu.com) account.
 
-**1. Get a Jev key.** In Vercel: AI Gateway → API Keys → Create key. Vercel asks for a card on file before it serves requests.
-
-**2. Get the code and your key in.**
+**1. Get the code.**
 ```bash
 git clone https://github.com/jb-akp/jev-avatar.git && cd jev-avatar
-cp .env.example .env        # paste AI_GATEWAY_API_KEY. OPENAI_API_KEY is only for the side-by-side race.
+cp .env.example .env
 pip install -r requirements.txt
 ```
+
+**2. Get a Jev key and put it in `.env`.** In Vercel: AI Gateway → API Keys → Create key (Vercel asks for a card on file). Paste it into `.env` as `AI_GATEWAY_API_KEY`. `OPENAI_API_KEY` is only needed for the side-by-side race.
 
 **3. Start the server.** The decision panel opens at http://localhost:8000 (`/explain` and `/how` are the explainer pages).
 ```bash
